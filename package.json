@@ -1,0 +1,13 @@
+{
+  "name": "sushi-counter",
+  "description": "Simple app for tracking number of sushi pieces eaten in a meal",
+  "author": "Jordan Hayashi <jordan@jordanhayashi.com>",
+  "version": "0.0.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "dependencies": {
+    "expo": "^24.0.0",
+    "react": "16.0.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz"
+  }
+}
