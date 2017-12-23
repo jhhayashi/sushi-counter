@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 
 import {resetCount} from '../redux/actions'
 
-const ResetButton = props => <Button title="Reset" onPress={props.resetCount} />
+import resetConfirm from './resetConfirm'
+
+const ResetButton = props => <Button title="Reset" onPress={() => resetConfirm(props.resetCount)} />
 
 export default connect(null, {resetCount})(ResetButton)
