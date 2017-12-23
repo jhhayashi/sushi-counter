@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Text, TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux'
-import {debounce} from 'lodash'
 
 import {incrementCount, resetCount} from '../redux/actions'
 import {ResetButton} from '../components'
@@ -21,11 +20,14 @@ class Home extends React.Component {
     resetCount: PropTypes.func.isRequired,
   }
 
-  incrementCount = debounce(
-    () => this.props.incrementCount(),
-    INC_INTERVAL,
-    {trailing: false, leading: true}
-  )
+  blockIncUntil = Date.now()
+
+  incrementCount = () => {
+    const now = Date.now()
+    if (now < this.blockIncUntil) return
+    this.props.incrementCount()
+    this.blockIncUntil = now + INC_INTERVAL
+  }
 
   render() {
     return (
