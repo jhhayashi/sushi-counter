@@ -20,15 +20,21 @@ class Home extends React.Component {
     resetCount: PropTypes.func.isRequired,
   }
 
-  blockIncUntil = Date.now()
+  state = {
+    disabled: false,
+  }
 
   incrementCount = () => {
     const now = Date.now()
-    if (now < this.blockIncUntil) return
+    if (this.state.disabled) return
     this.props.incrementCount()
     this.playAnimation()
-    this.blockIncUntil = now + INC_INTERVAL
+    this.disable()
+    setTimeout(this.enable, INC_INTERVAL)
   }
+
+  disable = () => { this.setState({disabled: true}) }
+  enable = () => { this.setState({disabled: false}) }
 
   setAnimationRef = ref => {
     this.animation = ref
@@ -40,7 +46,11 @@ class Home extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.incrementCount} style={styles.container}>
+      <TouchableOpacity
+        disabled={this.state.disabled}
+        onPress={this.incrementCount}
+        style={styles.container}
+      >
         <SushiAnimation style={styles.sushi} ref={this.setAnimationRef} />
         <Text style={styles.count}>{this.props.count}</Text>
       </TouchableOpacity>
