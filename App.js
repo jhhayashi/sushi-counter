@@ -1,5 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import {StyleSheet, Text, View} from 'react-native'
+import {FacebookAds} from 'expo'
 import {Provider} from 'react-redux'
 import {PersistGate} from 'redux-persist/es/integration/react'
 
@@ -7,6 +8,8 @@ import HomeNavigator from './HomeNavigator'
 import configureStore from './redux/store'
 
 const {store, persistor} = configureStore()
+
+// FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash)
 
 export default class App extends React.Component {
   render() {

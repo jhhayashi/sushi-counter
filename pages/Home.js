@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Text, TouchableOpacity} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
 import {incrementCount, resetCount} from '../redux/actions'
-import {ResetButton, SushiAnimation} from '../components'
+import {Ad, ResetButton, SushiAnimation} from '../components'
 
 const INC_INTERVAL = 2000
 
@@ -46,34 +46,38 @@ class Home extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity
-        disabled={this.state.disabled}
-        onPress={this.incrementCount}
-        style={styles.container}
-      >
-        <SushiAnimation style={styles.sushi} ref={this.setAnimationRef} />
-        <Text style={styles.count}>{this.props.count}</Text>
-      </TouchableOpacity>
+      <View style={styles.container}>
+        <TouchableOpacity
+          disabled={this.state.disabled}
+          onPress={this.incrementCount}
+          style={styles.button}
+        >
+          <SushiAnimation style={styles.sushi} ref={this.setAnimationRef} />
+          <Text style={styles.count}>{this.props.count}</Text>
+        </TouchableOpacity>
+        <Ad />
+      </View>
     )
   }
 }
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  button: {
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
-    paddingTop: 50,
-    paddingBottom: 100,
   },
   count: {
     flex: 1,
-    fontSize: 48,
+    fontSize: 72,
     textAlign: 'center',
   },
   sushi: {
     flex: 2,
   },
-}
+})
 
 export default connect(state => state, {incrementCount, resetCount})(Home)
