@@ -5,6 +5,9 @@
   "version": "1.0.0",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "dependencies": {
     "expo": "^24.0.0",
     "react": "16.0.0",
@@ -13,5 +16,10 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-persist": "^5.4.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.14.0",
+    "eslint-config-kensho": "^4.0.1",
+    "prettier": "^1.9.2"
   }
 }
