@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "sushi-counter",
-    "description": "This project is really great.",
+    "description": "Simple app for tracking number of sushi pieces eaten in a meal",
     "slug": "sushi-counter",
     "privacy": "public",
     "sdkVersion": "24.0.0",
@@ -16,7 +16,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jordanhayashi.sushicounter"
+      "bundleIdentifier": "com.jordanhayashi.sushicounter",
+      "loadJSInBackgroundExperimental": true
     },
     "facebookAppId": "2048557798713174",
     "facebookDisplayName": "jhhayashi"
