@@ -3,7 +3,7 @@ import {Animated} from 'react-native'
 import PropTypes from 'prop-types'
 import {DangerZone} from 'expo'
 
-import sushi from '../assets/sushi.json'
+import sushi from './sushi.json'
 
 const {Lottie: LottieView} = DangerZone
 
