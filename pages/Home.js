@@ -8,6 +8,25 @@ import {Ad, ResetButton, SushiAnimation} from '../components'
 
 const INC_INTERVAL = 2000
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  button: {
+    flex: 1,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  },
+  count: {
+    flex: 1,
+    fontSize: 72,
+    textAlign: 'center',
+  },
+  sushi: {
+    flex: 2,
+  },
+})
+
 class Home extends React.Component {
   static navigationOptions = {
     title: 'Sushi Counter',
@@ -25,7 +44,6 @@ class Home extends React.Component {
   }
 
   incrementCount = () => {
-    const now = Date.now()
     if (this.state.disabled) return
     this.props.incrementCount()
     this.playAnimation()
@@ -33,8 +51,12 @@ class Home extends React.Component {
     setTimeout(this.enable, INC_INTERVAL)
   }
 
-  disable = () => { this.setState({disabled: true}) }
-  enable = () => { this.setState({disabled: false}) }
+  disable = () => {
+    this.setState({disabled: true})
+  }
+  enable = () => {
+    this.setState({disabled: false})
+  }
 
   setAnimationRef = ref => {
     this.animation = ref
@@ -60,24 +82,5 @@ class Home extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  button: {
-    flex: 1,
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  count: {
-    flex: 1,
-    fontSize: 72,
-    textAlign: 'center',
-  },
-  sushi: {
-    flex: 2,
-  },
-})
 
 export default connect(state => state, {incrementCount, resetCount})(Home)
