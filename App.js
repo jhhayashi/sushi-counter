@@ -1,4 +1,5 @@
 import React from 'react'
+import {StatusBar} from 'react-native'
 import {FacebookAds} from 'expo'
 import {Provider} from 'react-redux'
 import {PersistGate} from 'redux-persist/es/integration/react'
@@ -14,6 +15,7 @@ FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash)
 export default () => (
   <Provider store={store}>
     <PersistGate persistor={persistor}>
+      <StatusBar barStyle="dark-content" />
       <HomeNavigator />
     </PersistGate>
   </Provider>
