@@ -1,10 +1,20 @@
 import {createStore} from 'redux'
-import {persistStore, persistReducer} from 'redux-persist'
+import {createTransform, persistStore, persistReducer} from 'redux-persist'
 import storage from 'redux-persist/es/storage'
 
+import {HighScore} from './types'
 import reducer from './reducer'
 
-const config = {key: 'root', storage}
+const transforms = [
+  createTransform(
+    // serialize
+    (val, key) => (key === 'highScore' ? val.toString() : val),
+    // deserialize
+    (val, key) => (key === 'highScore' ? new HighScore(val) : val)
+  ),
+]
+
+const config = {key: 'root', storage, transforms}
 
 const persistentReducer = persistReducer(config, reducer)
 

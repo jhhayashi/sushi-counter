@@ -4,7 +4,7 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
 import {incrementCount, resetCount} from '../redux/actions'
-import {Ad, ResetButton, SushiAnimation} from '../components'
+import {Ad, HighScore, ResetButton, SushiAnimation} from '../components'
 
 const INC_INTERVAL = 2000
 
@@ -35,6 +35,10 @@ class Home extends React.Component {
 
   static propTypes = {
     count: PropTypes.number.isRequired,
+    highScore: PropTypes.shape({
+      value: PropTypes.number.isRequired,
+      date: PropTypes.instanceOf(Date).isRequired,
+    }).isRequired,
     incrementCount: PropTypes.func.isRequired,
     resetCount: PropTypes.func.isRequired,
   }
@@ -69,6 +73,7 @@ class Home extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <HighScore {...this.props.highScore} />
         <TouchableOpacity
           disabled={this.state.disabled}
           onPress={this.incrementCount}
