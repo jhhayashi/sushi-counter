@@ -7,16 +7,24 @@ import {Meal} from '../redux/types'
 
 const styles = StyleSheet.create({
   mealCell: {
-    flexDirection: 'row',
-    padding: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
     justifyContent: 'space-around',
+    backgroundColor: '#fcfcfc',
+    borderBottomColor: '#333',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  center: {
+    textAlign: 'center',
   },
 })
 
 const MealCell = props => (
   <View style={styles.mealCell}>
     <Text>{props.date.toDateString()}</Text>
-    <Text>{props.value}</Text>
+    <Text style={styles.center}>{props.value}</Text>
   </View>
 )
 
