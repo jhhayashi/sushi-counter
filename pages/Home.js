@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 
 import {incrementCount, resetCount} from '../redux/actions'
 import {Ad, HighScore, ResetButton, SushiAnimation} from '../components'
+import {last} from '../utils'
 
 const INC_INTERVAL = 2000
 
@@ -88,4 +89,6 @@ class Home extends React.Component {
   }
 }
 
-export default connect(state => state, {incrementCount, resetCount})(Home)
+const mapStateToProps = state => ({highScore: state.highScore, count: last(state.meals).value})
+
+export default connect(mapStateToProps, {incrementCount, resetCount})(Home)

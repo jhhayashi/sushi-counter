@@ -1,17 +1,19 @@
-import {INCREMENT_COUNT, RESET_COUNT} from './actions'
-import {HighScore} from './types'
+import {last, withoutLast} from '../utils'
 
-const DEFAULT_STATE = {count: 0, highScore: new HighScore(0)}
+import {INCREMENT_COUNT, RESET_COUNT} from './actions'
+import {Meal} from './types'
+
+const DEFAULT_STATE = {highScore: new Meal(0), meals: [new Meal(0)]}
 
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case INCREMENT_COUNT: {
-      const count = state.count + 1
-      const highScore = count > state.highScore.value ? new HighScore(count) : state.highScore
-      return {...state, highScore, count}
+      const meal = last(state.meals).increment()
+      const highScore = meal.value > state.highScore.value ? meal : state.highScore
+      return {...state, highScore, meals: [...withoutLast(state.meals), meal]}
     }
     case RESET_COUNT:
-      return {...state, count: 0}
+      return {...state, meals: [...state.meals, new Meal(0)]}
     default:
       return state
   }
