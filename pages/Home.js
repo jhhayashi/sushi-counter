@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
 import {incrementCount, resetCount} from '../redux/actions'
@@ -29,10 +29,11 @@ const styles = StyleSheet.create({
 })
 
 class Home extends React.Component {
-  static navigationOptions = {
+  static navigationOptions = ({navigation}) => ({
     title: 'Sushi Counter',
     headerRight: <ResetButton />,
-  }
+    headerLeft: <Button title="History" onPress={() => navigation.navigate('Meals')} />,
+  })
 
   static propTypes = {
     count: PropTypes.number.isRequired,

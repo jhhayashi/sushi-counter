@@ -17,5 +17,10 @@ export class Meal {
     return JSON.stringify({value: this.value, date: +this.date})
   }
 
+  addKey = key => {
+    this.key = key
+    return this
+  }
+
   increment = () => new Meal({value: this.value + 1, date: +this.date})
 }
