@@ -1,20 +1,27 @@
+import {get, pick} from 'lodash/fp'
+
+const DEFAULT_ATTR = {
+  name: 'New Meal',
+  value: 0,
+}
+
+const extractProps = pick(['value', 'name', 'date'])
+
+const getBaseProps = val => {
+  if (typeof val === 'string') return JSON.parse(val)
+  if (typeof val === 'object') return val
+  return DEFAULT_ATTR
+}
+
 export class Meal {
   constructor(val) {
-    if (typeof val === 'string') {
-      const highScore = JSON.parse(val)
-      this.value = highScore.value
-      this.date = new Date(highScore.date)
-    } else if (typeof val === 'object') {
-      this.value = val.value
-      this.date = new Date(val.date)
-    } else {
-      this.value = val
-      this.date = new Date()
-    }
+    const meal = getBaseProps(val)
+    Object.assign(this, extractProps(meal))
+    this.date = get('date', val) ? new Date(val.date) : new Date()
   }
 
   toString() {
-    return JSON.stringify({value: this.value, date: +this.date})
+    return JSON.stringify({...extractProps(this), date: +this.date})
   }
 
   addKey = key => {
@@ -22,5 +29,5 @@ export class Meal {
     return this
   }
 
-  increment = () => new Meal({value: this.value + 1, date: +this.date})
+  increment = () => new Meal({...extractProps(this), value: this.value + 1})
 }

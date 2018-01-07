@@ -7,30 +7,43 @@ import {Meal} from '../redux/types'
 
 const styles = StyleSheet.create({
   mealCell: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 20,
     paddingRight: 20,
-    justifyContent: 'space-around',
     backgroundColor: '#fcfcfc',
     borderBottomColor: '#333',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  center: {
-    textAlign: 'center',
+  mealCount: {
+    paddingLeft: 20,
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  flowRight: {
+    flexDirection: 'row',
+    flex: 1,
   },
 })
 
 const MealCell = props => (
   <View style={styles.mealCell}>
-    <Text>{props.date.toDateString()}</Text>
-    <Text style={styles.center}>{props.value}</Text>
+    <View style={styles.flowRight}>
+      <Text>
+        <Text style={styles.bold}>{props.name}</Text> ({props.date.toDateString()})
+      </Text>
+    </View>
+    <Text style={styles.mealCount}>{props.value}</Text>
   </View>
 )
 
 MealCell.propTypes = {
   value: PropTypes.number.isRequired,
   date: PropTypes.instanceOf(Date).isRequired,
+  name: PropTypes.string.isRequired,
 }
 
 // eslint-disable-next-line react/prop-types

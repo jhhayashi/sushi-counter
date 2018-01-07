@@ -1,4 +1,5 @@
 export Ad from './Ad'
+export getMealName from './getMealName'
 export HighScore from './HighScore'
 export ResetButton from './ResetButton'
 export SushiAnimation from './SushiAnimation'
