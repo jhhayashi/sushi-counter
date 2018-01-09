@@ -2,7 +2,7 @@
   "name": "sushi-counter",
   "description": "Simple app for tracking number of sushi pieces eaten in a meal",
   "author": "Jordan Hayashi <jordan@jordanhayashi.com>",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "private": true,
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
