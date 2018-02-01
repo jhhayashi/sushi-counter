@@ -12,7 +12,7 @@ const {store, persistor} = configureStore()
 // persistor.purge()
 
 // add device to receive test ads. should receive real ones once approved by fb
-FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash)
+// FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash)
 
 export default () => (
   <Provider store={store}>
