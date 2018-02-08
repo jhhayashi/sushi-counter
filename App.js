@@ -1,6 +1,6 @@
 import React from 'react'
 import {StatusBar} from 'react-native'
-import {FacebookAds} from 'expo'
+// import {FacebookAds} from 'expo'
 import {Provider} from 'react-redux'
 import {PersistGate} from 'redux-persist/es/integration/react'
 

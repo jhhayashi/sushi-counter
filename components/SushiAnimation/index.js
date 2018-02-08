@@ -9,7 +9,7 @@ const {Lottie: LottieView} = DangerZone
 
 export default class SushiAnimation extends React.Component {
   static propTypes = {
-    style: PropTypes.any,
+    style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
   }
 
   state = {

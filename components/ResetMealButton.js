@@ -5,19 +5,19 @@ import {connect} from 'react-redux'
 
 import {createMeal} from '../redux/actions'
 
-import resetConfirm from './resetConfirm'
+import resetMealConfirm from './resetMealConfirm'
 import getMealName from './getMealName'
 
-const ResetButton = props => (
+const ResetMealButton = props => (
   <Button
     title="Reset"
-    onPress={() => resetConfirm(() => getMealName(props.createMeal, props.mealCount))}
+    onPress={() => resetMealConfirm(() => getMealName(props.createMeal, props.mealCount))}
   />
 )
 
-ResetButton.propTypes = {
+ResetMealButton.propTypes = {
   createMeal: PropTypes.func.isRequired,
   mealCount: PropTypes.number.isRequired,
 }
 
-export default connect(state => ({mealCount: state.meals.length}), {createMeal})(ResetButton)
+export default connect(state => ({mealCount: state.meals.length}), {createMeal})(ResetMealButton)
