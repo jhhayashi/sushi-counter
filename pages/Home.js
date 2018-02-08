@@ -4,7 +4,7 @@ import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
 import {createMeal, incrementCount} from '../redux/actions'
-import {Ad, getMealName, HighScore, ResetButton, SushiAnimation} from '../components'
+import {Ad, getMealName, HighScore, ResetMealButton, SushiAnimation} from '../components'
 import {last} from '../utils'
 
 const INC_INTERVAL = 2000
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 class Home extends React.Component {
   static navigationOptions = ({navigation}) => ({
     title: 'Sushi Counter',
-    headerRight: <ResetButton />,
+    headerRight: <ResetMealButton />,
     headerLeft: <Button title="History" onPress={() => navigation.navigate('Meals')} />,
   })
 
@@ -58,6 +58,10 @@ class Home extends React.Component {
     }
   }
 
+  setAnimationRef = ref => {
+    this.animation = ref
+  }
+
   incrementCount = () => {
     if (this.state.disabled) return
     this.props.incrementCount()
@@ -71,10 +75,6 @@ class Home extends React.Component {
   }
   enable = () => {
     this.setState({disabled: false})
-  }
-
-  setAnimationRef = ref => {
-    this.animation = ref
   }
 
   playAnimation = () => {
