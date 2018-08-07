@@ -17,7 +17,7 @@ export class Meal {
   constructor(val) {
     const meal = getBaseProps(val)
     Object.assign(this, extractProps(meal))
-    this.date = get('date', val) ? new Date(val.date) : new Date()
+    this.date = get('date', meal) ? new Date(meal.date) : new Date()
   }
 
   toString() {
