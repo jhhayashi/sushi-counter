@@ -78,7 +78,7 @@ class Home extends React.Component {
   }
 
   playAnimation = () => {
-    if (this.animation) this.animation.play(INC_INTERVAL)
+    if (this.animation) this.animation.play()
   }
 
   render() {
@@ -91,7 +91,7 @@ class Home extends React.Component {
           onPress={this.incrementCount}
           style={styles.button}
         >
-          <SushiAnimation style={styles.sushi} ref={this.setAnimationRef} />
+          <SushiAnimation duration={INC_INTERVAL} style={styles.sushi} ref={this.setAnimationRef} />
           <Text style={styles.count}>{meal ? meal.value : 0}</Text>
         </TouchableOpacity>
         <Ad />
@@ -106,4 +106,7 @@ const mapStateToProps = state => ({
   meal: last(state.meals),
 })
 
-export default connect(mapStateToProps, {createMeal, incrementCount})(Home)
+export default connect(
+  mapStateToProps,
+  {createMeal, incrementCount}
+)(Home)
