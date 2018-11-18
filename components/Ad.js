@@ -21,7 +21,7 @@ export default class Ad extends React.Component {
     if (this.state.hasError) return <View />
     return (
       <View style={style}>
-        <FacebookAds.BannerView
+        <FacebookAds.BannerAd
           placementId="2048557798713174_2048558958713058"
           type="standard"
           onError={this.handleError}

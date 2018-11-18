@@ -9,11 +9,11 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "expo": "^24.0.0",
+    "expo": "^31.0.4",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.0",
-    "react": "16.0.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-24.0.0.tar.gz",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
     "react-navigation": "^1.0.0-beta.22",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
