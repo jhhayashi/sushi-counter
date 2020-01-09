@@ -94,7 +94,6 @@ class Home extends React.Component {
           <SushiAnimation style={styles.sushi} ref={this.setAnimationRef} />
           <Text style={styles.count}>{meal ? meal.value : 0}</Text>
         </TouchableOpacity>
-        <Ad />
       </View>
     )
   }
