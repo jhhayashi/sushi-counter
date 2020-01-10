@@ -14,10 +14,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "enabled": true,
+      "fallbackToCacheTimeout": 0
+    },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jordanhayashi.sushicounter",
-      "loadJSInBackgroundExperimental": true
+      "bundleIdentifier": "com.jordanhayashi.sushicounter"
     },
     "facebookAppId": "2048557798713174",
     "facebookDisplayName": "jhhayashi"
