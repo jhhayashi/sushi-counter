@@ -1,11 +1,9 @@
 import React from 'react'
 import {Animated} from 'react-native'
 import PropTypes from 'prop-types'
-import {DangerZone} from 'expo'
+import Lottie from 'lottie-react-native'
 
 import sushi from './sushi.json'
-
-const {Lottie: LottieView} = DangerZone
 
 export default class SushiAnimation extends React.Component {
   static propTypes = {
@@ -35,7 +33,7 @@ export default class SushiAnimation extends React.Component {
 
   render() {
     return (
-      <LottieView
+      <Lottie
         ref={this.setLottieRef}
         progress={this.state.progress}
         source={sushi}
