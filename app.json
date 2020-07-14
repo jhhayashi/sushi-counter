@@ -4,8 +4,10 @@
     "description": "Simple app for tracking number of sushi pieces eaten in a meal",
     "slug": "sushi-counter",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.5.1",
     "orientation": "portrait",
     "icon": "./assets/icon_1024.png",
