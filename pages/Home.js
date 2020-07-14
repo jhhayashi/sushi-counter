@@ -29,12 +29,6 @@ const styles = StyleSheet.create({
 })
 
 class Home extends React.Component {
-  static navigationOptions = ({navigation}) => ({
-    title: 'Sushi Counter',
-    headerRight: <ResetMealButton />,
-    headerLeft: <Button title="History" onPress={() => navigation.navigate('Meals')} />,
-  })
-
   static propTypes = {
     meal: PropTypes.shape({
       value: PropTypes.number.isRequired,

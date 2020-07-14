@@ -22,10 +22,6 @@ class Meals extends React.Component {
     meals: PropTypes.arrayOf(PropTypes.instanceOf(Meal)),
   }
 
-  static navigationOptions = {
-    title: 'Meal History',
-  }
-
   state = {
     meals: this.props.meals.map((meal, key) => meal.addKey(key)),
   }

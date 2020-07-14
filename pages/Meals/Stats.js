@@ -35,6 +35,7 @@ const statsMetadata = [
 
 const Stats = props => {
   const {meals} = props
+  if (!meals.length) return null
   const values = map('value', meals)
   return (
     <View style={styles.container}>
