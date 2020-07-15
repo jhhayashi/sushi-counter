@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
@@ -28,70 +28,57 @@ const styles = StyleSheet.create({
   },
 })
 
+function Home(props) {
+  const [disabled, setDisabled] = useState(false)
+  const {highScore, meal} = props
+  const animation = useRef(null)
+
+  const incrementCount = () => {
+    if (disabled) return
+    props.incrementCount()
+    if (animation.current) animation.current.play(INC_INTERVAL)
+    setDisabled(true)
+    setTimeout(() => setDisabled(false), INC_INTERVAL)
+  }
+
+  return (
+    <View style={styles.container}>
+      <HighScore {...highScore} />
+      <TouchableOpacity
+        disabled={disabled}
+        onPress={incrementCount}
+        style={styles.button}
+      >
+        <SushiAnimation style={styles.sushi} ref={animation} />
+        <Text style={styles.count}>{meal ? meal.value : 0}</Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
+Home.propTypes = {
+  meal: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+  }),
+  mealCount: PropTypes.number.isRequired,
+  createMeal: PropTypes.func.isRequired,
+  highScore: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+    date: PropTypes.instanceOf(Date).isRequired,
+  }).isRequired,
+  incrementCount: PropTypes.func.isRequired,
+}
+
+/*
 class Home extends React.Component {
-  static propTypes = {
-    meal: PropTypes.shape({
-      value: PropTypes.number.isRequired,
-    }),
-    mealCount: PropTypes.number.isRequired,
-    createMeal: PropTypes.func.isRequired,
-    highScore: PropTypes.shape({
-      value: PropTypes.number.isRequired,
-      date: PropTypes.instanceOf(Date).isRequired,
-    }).isRequired,
-    incrementCount: PropTypes.func.isRequired,
-  }
-
-  state = {
-    disabled: false,
-  }
-
   componentDidMount() {
     if (!this.props.meal) {
       getMealName(this.props.createMeal, this.props.mealCount)
     }
   }
 
-  setAnimationRef = ref => {
-    this.animation = ref
-  }
-
-  incrementCount = () => {
-    if (this.state.disabled) return
-    this.props.incrementCount()
-    this.playAnimation()
-    this.disable()
-    setTimeout(this.enable, INC_INTERVAL)
-  }
-
-  disable = () => {
-    this.setState({disabled: true})
-  }
-  enable = () => {
-    this.setState({disabled: false})
-  }
-
-  playAnimation = () => {
-    if (this.animation) this.animation.play(INC_INTERVAL)
-  }
-
-  render() {
-    const {highScore, meal} = this.props
-    return (
-      <View style={styles.container}>
-        <HighScore {...highScore} />
-        <TouchableOpacity
-          disabled={this.state.disabled}
-          onPress={this.incrementCount}
-          style={styles.button}
-        >
-          <SushiAnimation style={styles.sushi} ref={this.setAnimationRef} />
-          <Text style={styles.count}>{meal ? meal.value : 0}</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
 }
+*/
 
 const mapStateToProps = state => ({
   highScore: state.highScore,
