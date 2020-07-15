@@ -17,33 +17,22 @@ const styles = StyleSheet.create({
 // eslint-disable-next-line react/prop-types
 const renderItem = ({item}) => <MealCell {...item} />
 
-class Meals extends React.Component {
-  static propTypes = {
-    meals: PropTypes.arrayOf(PropTypes.instanceOf(Meal)),
-  }
+function Meals(props) {
+  const meals = props.meals.map((meal, key) => meal.addKey(`${key}`))
+  return (
+    <View style={styles.fill}>
+      <Stats meals={meals} />
+      <FlatList
+        contentContainerStyle={styles.fill}
+        data={meals}
+        renderItem={renderItem}
+      />
+    </View>
+  )
+}
 
-  state = {
-    meals: this.props.meals.map((meal, key) => meal.addKey(key)),
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (this.props.meals !== newProps.meals) {
-      this.setState({meals: newProps.meals.map((meal, key) => meal.addKey(key))})
-    }
-  }
-
-  render() {
-    return (
-      <View style={styles.fill}>
-        <Stats meals={this.props.meals} />
-        <FlatList
-          contentContainerStyle={styles.fill}
-          data={this.state.meals}
-          renderItem={renderItem}
-        />
-      </View>
-    )
-  }
+Meals.propTypes = {
+  meals: PropTypes.arrayOf(PropTypes.instanceOf(Meal)),
 }
 
 export default connect(state => ({meals: state.meals}))(Meals)
