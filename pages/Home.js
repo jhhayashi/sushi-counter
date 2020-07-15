@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useRef, useState} from 'react'
+import React, {useCallback, useLayoutEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 function Home(props) {
   const {highScore, meal, navigation} = props
   const [disabled, setDisabled] = useState(false)
-  const [showDialog, setShowDialog] = useState(!meal)
+  const [shouldShowDialog, setShouldShowDialog] = useState(!meal)
   const animation = useRef(null)
 
   const incrementCount = () => {
@@ -44,31 +44,33 @@ function Home(props) {
 
   const createNewMeal = mealName => {
     props.createMeal(mealName)
-    setShowDialog(false)
+    setShouldShowDialog(false)
   }
+
+  const showDialog = useCallback(() => setShouldShowDialog(true))
 
   // reset button in navbar
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Button title="Reset" onPress={() => setShowDialog(true)} />
+      headerRight: () => <Button title="Reset" onPress={showDialog} />
     })
   })
 
   return (
     <View style={styles.container}>
-      {/* we unmount the element when showDialog is false rather than using the visible prop
+      {/* we unmount the element when shouldShowDialog is false rather than using the visible prop
           because the race condition causes the defaultMealName to update before the visibility
           prop properly hides the dialog */}
-      {showDialog && <NewMealDialog
+      {shouldShowDialog && <NewMealDialog
         defaultMealName={`New Meal ${props.mealCount + 1}`}
         onMealNameSet={createNewMeal}
-        onCancel={() => setShowDialog(false)}
-        visible={showDialog}
+        onCancel={() => setShouldShowDialog(false)}
+        visible={shouldShowDialog}
       />}
       <HighScore {...highScore} />
       <TouchableOpacity
         disabled={disabled}
-        onPress={incrementCount}
+        onPress={meal ? incrementCount : showDialog}
         style={styles.button}
       >
         <SushiAnimation style={styles.sushi} ref={animation} />
