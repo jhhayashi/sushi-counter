@@ -4,7 +4,7 @@ import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
 import {createMeal, incrementCount} from '../redux/actions'
-import {Ad, getMealName, HighScore, ResetMealButton, SushiAnimation} from '../components'
+import {Ad, getMealName, HighScore, NewMealDialog, ResetMealButton, SushiAnimation} from '../components'
 import {last} from '../utils'
 
 const INC_INTERVAL = 2000
@@ -29,8 +29,9 @@ const styles = StyleSheet.create({
 })
 
 function Home(props) {
-  const [disabled, setDisabled] = useState(false)
   const {highScore, meal} = props
+  const [disabled, setDisabled] = useState(false)
+  const [showDialog, setShowDialog] = useState(!meal)
   const animation = useRef(null)
 
   const incrementCount = () => {
@@ -41,8 +42,22 @@ function Home(props) {
     setTimeout(() => setDisabled(false), INC_INTERVAL)
   }
 
+  const createNewMeal = mealName => {
+    props.createMeal(mealName)
+    setShowDialog(false)
+  }
+
   return (
     <View style={styles.container}>
+      {/* we unmount the element when showDialog is false rather than using the visible prop
+          because the race condition causes the defaultMealName to update before the visibility
+          prop properly hides the dialog */}
+      {showDialog && <NewMealDialog
+        defaultMealName={`New Meal ${props.mealCount + 1}`}
+        onMealNameSet={createNewMeal}
+        onCancel={() => setShowDialog(false)}
+        visible={showDialog}
+      />}
       <HighScore {...highScore} />
       <TouchableOpacity
         disabled={disabled}
@@ -68,17 +83,6 @@ Home.propTypes = {
   }).isRequired,
   incrementCount: PropTypes.func.isRequired,
 }
-
-/*
-class Home extends React.Component {
-  componentDidMount() {
-    if (!this.props.meal) {
-      getMealName(this.props.createMeal, this.props.mealCount)
-    }
-  }
-
-}
-*/
 
 const mapStateToProps = state => ({
   highScore: state.highScore,

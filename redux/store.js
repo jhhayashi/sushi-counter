@@ -35,5 +35,9 @@ const persistentReducer = persistReducer(config, reducer)
 export default () => {
   const store = createStore(persistentReducer)
   const persistor = persistStore(store)
+
+  // uncomment this to purge redux store on startup
+  persistor.purge()
+
   return {persistor, store}
 }

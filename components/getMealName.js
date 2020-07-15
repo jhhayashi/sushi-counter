@@ -1,6 +1,7 @@
 import {AlertIOS} from 'react-native'
 
-export default (onMealNameSet, mealCount) =>
+export default (onMealNameSet, mealCount) => null
+/*
   AlertIOS.prompt(
     'Set Meal Name',
     'Enter a name for this meal',
@@ -8,3 +9,4 @@ export default (onMealNameSet, mealCount) =>
     'plain-text',
     `New Meal ${mealCount + 1}`
   )
+  */
