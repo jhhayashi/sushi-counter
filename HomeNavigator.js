@@ -18,7 +18,6 @@ export default function HomeNavigator() {
           component={Home}
           options={({navigation}) => ({
             title: 'Sushi Counter',
-            headerRight: () => <ResetMealButton />,
             headerLeft: () => <Button title="History" onPress={() => navigation.navigate('Meals')} />,
           })}
         />

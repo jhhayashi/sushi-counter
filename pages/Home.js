@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useLayoutEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 })
 
 function Home(props) {
-  const {highScore, meal} = props
+  const {highScore, meal, navigation} = props
   const [disabled, setDisabled] = useState(false)
   const [showDialog, setShowDialog] = useState(!meal)
   const animation = useRef(null)
@@ -46,6 +46,13 @@ function Home(props) {
     props.createMeal(mealName)
     setShowDialog(false)
   }
+
+  // reset button in navbar
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <Button title="Reset" onPress={() => setShowDialog(true)} />
+    })
+  })
 
   return (
     <View style={styles.container}>

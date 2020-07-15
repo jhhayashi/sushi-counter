@@ -10,7 +10,7 @@ export default function NewMealDialog(props) {
   }
   return (
     <Dialog.Container visible={props.visible}>
-      <Dialog.Title>Set Meal Name</Dialog.Title>
+      <Dialog.Title>{props.title || "Create a New Meal"}</Dialog.Title>
       <Dialog.Description>
         Enter a name for this meal
       </Dialog.Description>
@@ -25,5 +25,6 @@ NewMealDialog.propTypes = {
   defaultMealName: PropTypes.string,
   onMealNameSet: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  title: PropTypes.string,
   visible: PropTypes.bool.isRequired,
 }
