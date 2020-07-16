@@ -74,7 +74,7 @@ function Home(props) {
         style={styles.button}
       >
         <SushiAnimation style={styles.sushi} ref={animation} />
-        <Text style={styles.count}>{meal ? meal.value : 0}</Text>
+        <Text style={styles.count}>{meal ? meal.value : "--"}</Text>
       </TouchableOpacity>
     </View>
   )
@@ -96,7 +96,7 @@ Home.propTypes = {
 const mapStateToProps = state => ({
   highScore: state.highScore,
   mealCount: state.meals.length,
-  meal: last(state.meals),
+  meal: state.activeMeal ? last(state.meals) : null,
 })
 
 export default connect(mapStateToProps, {createMeal, incrementCount})(Home)
