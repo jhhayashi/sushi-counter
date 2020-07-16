@@ -28,11 +28,13 @@ const styles = StyleSheet.create({
   },
 })
 
+const dateFormatter = new Intl.DateTimeFormat(undefined, {weekday: "short", day: "numeric", month: "numeric", year: "2-digit"})
+
 const MealCell = props => (
   <View style={styles.mealCell}>
     <View style={styles.flowRight}>
       <Text>
-        <Text style={styles.bold}>{props.name}</Text> ({props.date.toDateString()})
+        <Text style={styles.bold}>{props.name}</Text> ({dateFormatter.format(props.date)})
       </Text>
     </View>
     <Text style={styles.mealCount}>{props.value}</Text>
