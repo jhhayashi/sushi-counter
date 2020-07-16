@@ -1,6 +1,6 @@
 import {last, withoutLast} from '../utils'
 
-import {INCREMENT_COUNT, CREATE_MEAL} from './actions'
+import {DELETE_MEAL, INCREMENT_COUNT, CREATE_MEAL} from './actions'
 import {Meal} from './types'
 
 const DEFAULT_STATE = {highScore: new Meal(), meals: []}
@@ -14,6 +14,8 @@ export default (state = DEFAULT_STATE, action) => {
     }
     case CREATE_MEAL:
       return {...state, meals: [...state.meals, new Meal({value: 0, name: action.payload.name})]}
+    case DELETE_MEAL:
+      return {...state, meals: state.meals.filter(meal => meal !== action.payload.meal)}
     default:
       return state
   }

@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {StyleSheet, Text, View} from 'react-native'
+import {Button, StyleSheet, Text, View} from 'react-native'
+
+import {Meal} from '../../redux/types'
 
 const styles = StyleSheet.create({
   mealCell: {
@@ -34,13 +36,17 @@ const MealCell = props => (
       </Text>
     </View>
     <Text style={styles.mealCount}>{props.value}</Text>
+    {props.showDeleteButton && <Button title="Delete" onPress={() => props.onDelete(props.meal)} />}
   </View>
 )
 
 MealCell.propTypes = {
-  value: PropTypes.number.isRequired,
   date: PropTypes.instanceOf(Date).isRequired,
+  onDelete: PropTypes.func.isRequired,
+  meal: PropTypes.instanceOf(Meal),
   name: PropTypes.string.isRequired,
+  showDeleteButton: PropTypes.bool.isRequired,
+  value: PropTypes.number.isRequired,
 }
 
 export default MealCell
