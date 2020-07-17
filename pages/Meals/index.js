@@ -1,7 +1,7 @@
 import React, {useLayoutEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Animated, Button, StyleSheet, Text, View} from 'react-native'
+import {Animated, Button, Dimensions, StyleSheet, Text, View} from 'react-native'
 import {SwipeListView} from 'react-native-swipe-list-view'
 
 import {DeleteMealDialog} from '../../components'
@@ -10,6 +10,8 @@ import {deleteMeal} from '../../redux/actions'
 
 import MealCell from './MealCell'
 import Stats from './Stats'
+
+const SLIDE_TO_DELETE_PCT = 51
 
 const styles = StyleSheet.create({
   fill: {flex: 1},
@@ -56,8 +58,9 @@ function Meals(props) {
   const animatedValues = meals.reduce((acc, meal) => ({...acc, [meal.key]: new Animated.Value(1)}), {})
 
   const onSwipeValueChange = ({key, value}) => {
-    if (!isAnimating.current.val) {
-    console.log(`animating ${key}`)
+    if (isAnimating.current.val) return
+    // all the way open
+    if (Math.abs(value) >= Dimensions.get('window').width) {
       Animated
         .timing(animatedValues[key], {toValue: 0, duration: 200, useNativeDriver: false})
         .start(() => isAnimating.current.val = false)
@@ -87,6 +90,9 @@ function Meals(props) {
           meal,
         }))}
         renderHiddenItem={renderHiddenItem}
+        rightOpenValue={-Dimensions.get('window').width}
+        swipeToOpenPercent={SLIDE_TO_DELETE_PCT}
+        swipeToClosePercent={SLIDE_TO_DELETE_PCT}
         useNativeDriver={false}
       />
     </View>
