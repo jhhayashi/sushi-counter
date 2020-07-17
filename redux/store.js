@@ -37,7 +37,7 @@ export default () => {
   const persistor = persistStore(store)
 
   // uncomment this to purge redux store on startup
-  persistor.purge()
+  // persistor.purge()
 
   return {persistor, store}
 }

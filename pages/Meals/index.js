@@ -1,7 +1,8 @@
 import React, {useLayoutEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Button, FlatList, StyleSheet, View} from 'react-native'
+import {Button, StyleSheet, Text, View} from 'react-native'
+import {SwipeListView} from 'react-native-swipe-list-view'
 
 import {DeleteMealDialog} from '../../components'
 import {Meal} from '../../redux/types'
@@ -11,13 +12,24 @@ import MealCell from './MealCell'
 import Stats from './Stats'
 
 const styles = StyleSheet.create({
-  fill: {
-    flex: 1,
-  },
+  fill: {flex: 1},
+  rowBehind: {backgroundColor: 'red', flexDirection: 'row', alignItems: 'center', paddingRight: 10},
+  deleteText: {color: 'white', marginLeft: 'auto'},
 })
 
 // eslint-disable-next-line react/prop-types
 const renderItem = props => ({item}) => <MealCell {...props} {...item} meal={item} />
+
+function renderHiddenItem() {
+  return (
+		<View style={[styles.rowBehind, styles.fill]}>
+			<Text style={styles.deleteText}>Delete</Text>
+		</View>
+  )
+}
+
+// references to Animated.Values that belong to each meal row
+const animatedValues = {}
 
 function Meals(props) {
   const [isEditMode, setEditMode] = useState(false)
@@ -36,6 +48,8 @@ function Meals(props) {
     setStagedDeleteMeal(null)
   }
 
+  const onSwipeValueChange
+
   const meals = props.meals.map((meal, key) => meal.addKey(`${key}`))
   return (
     <View style={styles.fill}>
@@ -46,10 +60,12 @@ function Meals(props) {
         visible={!!stagedDeleteMeal}
       />
       <Stats meals={meals} />
-      <FlatList
-        contentContainerStyle={styles.fill}
+      <SwipeListView
+        disableRightSwipe
         data={meals}
+        contentContainerStyle={styles.fill}
         renderItem={renderItem({onDelete: setStagedDeleteMeal, showDeleteButton: isEditMode})}
+        renderHiddenItem={renderHiddenItem}
       />
     </View>
   )
