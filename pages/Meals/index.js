@@ -1,7 +1,7 @@
-import React, {useLayoutEffect, useState} from 'react'
+import React, {useLayoutEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Button, StyleSheet, Text, View} from 'react-native'
+import {Animated, Button, StyleSheet, Text, View} from 'react-native'
 import {SwipeListView} from 'react-native-swipe-list-view'
 
 import {DeleteMealDialog} from '../../components'
@@ -13,12 +13,17 @@ import Stats from './Stats'
 
 const styles = StyleSheet.create({
   fill: {flex: 1},
-  rowBehind: {backgroundColor: 'red', flexDirection: 'row', alignItems: 'center', paddingRight: 10},
+  rowBehind: {
+    backgroundColor: 'red',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+  },
   deleteText: {color: 'white', marginLeft: 'auto'},
 })
 
 // eslint-disable-next-line react/prop-types
-const renderItem = props => ({item}) => <MealCell {...props} {...item} meal={item} />
+const renderItem = getPropsFromItem => ({item}) => <MealCell {...getPropsFromItem(item)} />
 
 function renderHiddenItem() {
   return (
@@ -28,13 +33,11 @@ function renderHiddenItem() {
   )
 }
 
-// references to Animated.Values that belong to each meal row
-const animatedValues = {}
-
 function Meals(props) {
   const [isEditMode, setEditMode] = useState(false)
   // a reference to the meal that pending the confirmation dialog before delete
   const [stagedDeleteMeal, setStagedDeleteMeal] = useState(null)
+  const isAnimating = useRef({val: false})
 
   useLayoutEffect(() => {
     props.navigation.setOptions({
@@ -48,9 +51,20 @@ function Meals(props) {
     setStagedDeleteMeal(null)
   }
 
-  const onSwipeValueChange
-
+  // TODO: use actual (and persistent) IDs
   const meals = props.meals.map((meal, key) => meal.addKey(`${key}`))
+  const animatedValues = meals.reduce((acc, meal) => ({...acc, [meal.key]: new Animated.Value(1)}), {})
+
+  const onSwipeValueChange = ({key, value}) => {
+    if (!isAnimating.current.val) {
+    console.log(`animating ${key}`)
+      Animated
+        .timing(animatedValues[key], {toValue: 0, duration: 200, useNativeDriver: false})
+        .start(() => isAnimating.current.val = false)
+      isAnimating.current.val = true
+    }
+  }
+
   return (
     <View style={styles.fill}>
       <DeleteMealDialog
@@ -64,8 +78,16 @@ function Meals(props) {
         disableRightSwipe
         data={meals}
         contentContainerStyle={styles.fill}
-        renderItem={renderItem({onDelete: setStagedDeleteMeal, showDeleteButton: isEditMode})}
+        onSwipeValueChange={onSwipeValueChange}
+        renderItem={renderItem(meal => ({
+          animatedValue: animatedValues[meal.key],
+          onDelete: setStagedDeleteMeal,
+          showDeleteButton: isEditMode,
+          ...meal,
+          meal,
+        }))}
         renderHiddenItem={renderHiddenItem}
+        useNativeDriver={false}
       />
     </View>
   )
