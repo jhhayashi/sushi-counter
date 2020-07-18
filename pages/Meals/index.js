@@ -13,6 +13,11 @@ import Stats from './Stats'
 
 const SLIDE_TO_DELETE_PCT = 51
 
+// https://github.com/facebook/react-native/issues/20783
+// https://github.com/jemise111/react-native-swipe-list-view/issues/421
+const REST_SPEED_THRESHOLD = 100
+const REST_DISPLACEMENT_THRESHOLD = 40
+
 const styles = StyleSheet.create({
   fill: {flex: 1},
   rowBehind: {
@@ -44,6 +49,7 @@ function Meals(props) {
   // to show/hide modal, a race condition shows a null value in the modal as it fades out
   const [showDialog, setShowDialog] = useState(false)
   const [isAnimating, setIsAnimating]  = useState(false)
+  const stagedDeleteRowRef = useRef(null)
 
   const [animatedValues, setAnimatedValues] = useState(meals.reduce((acc, meal) => ({...acc, [meal.id]: new Animated.Value(1)}), {}))
 
@@ -59,8 +65,10 @@ function Meals(props) {
   })
 
   const cancelDelete = useCallback(() => {
-    setStagedDeleteMeal(null)
     setShowDialog(false)
+    if (stagedDeleteRowRef.current && typeof stagedDeleteRowRef.current.closeRow == 'function') stagedDeleteRowRef.current.closeRow()
+    // ensure no flash of null content in dialog and use this values continued existence to ensure onSwipeValueChange doesnt retrigger
+    setTimeout(() => setStagedDeleteMeal(null), 200)
   })
 
   const onConfirmDelete = () => {
@@ -73,17 +81,14 @@ function Meals(props) {
         setIsAnimating(false)
         props.deleteMeal(stagedDeleteMeal)
         setStagedDeleteMeal(null)
+        stagedDeleteRowRef.current = null
       })
   }
 
-
-  const onSwipeValueChange = ({key, value}) => {
-    if (isAnimating) return
-    // all the way open, time to show confimration dialog
-    if (Math.abs(value) >= Dimensions.get('window').width) {
-      const mealToDelete = props.meals.find(meal => meal.id === key) 
-      stageDelete(mealToDelete)
-    }
+  const onRowDidOpen = (rowKey, rowMap) => {
+    stagedDeleteRowRef.current = rowMap[rowKey]
+    const mealToDelete = props.meals.find(meal => meal.id === rowKey) 
+    stageDelete(mealToDelete)
   }
 
   return (
@@ -100,7 +105,7 @@ function Meals(props) {
         data={meals}
         contentContainerStyle={styles.fill}
         keyExtractor={meal => meal.id}
-        onSwipeValueChange={onSwipeValueChange}
+        onRowDidOpen={onRowDidOpen}
         renderItem={renderItem(meal => ({
           animatedValue: animatedValues[meal.id],
           onDelete: stageDelete,
@@ -109,6 +114,8 @@ function Meals(props) {
           meal,
         }))}
         renderHiddenItem={renderHiddenItem}
+        restDisplacementThreshold={REST_DISPLACEMENT_THRESHOLD}
+        restSpeedThreshold={REST_SPEED_THRESHOLD}
         rightOpenValue={-Dimensions.get('window').width}
         swipeToOpenPercent={SLIDE_TO_DELETE_PCT}
         swipeToClosePercent={SLIDE_TO_DELETE_PCT}
