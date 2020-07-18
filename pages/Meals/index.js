@@ -36,10 +36,13 @@ function renderHiddenItem() {
 }
 
 function Meals(props) {
+  const {meals} = props
   const [isEditMode, setEditMode] = useState(false)
   // a reference to the meal that pending the confirmation dialog before delete
   const [stagedDeleteMeal, setStagedDeleteMeal] = useState(null)
-  const isAnimating = useRef({val: false})
+  const [isAnimating, setIsAnimating]  = useState(false)
+
+  const [animatedValues, setAnimatedValues] = useState(meals.reduce((acc, meal) => ({...acc, [meal.id]: new Animated.Value(1)}), {}))
 
   useLayoutEffect(() => {
     props.navigation.setOptions({
@@ -48,25 +51,28 @@ function Meals(props) {
   })
 
   const onConfirmDelete = () => {
-    props.deleteMeal(stagedDeleteMeal)
-    // TODO: fix race condition so there's no flash of missing meal name
     setStagedDeleteMeal(null)
+    setIsAnimating(true)
+
+    Animated
+      .timing(animatedValues[stagedDeleteMeal.id], {toValue: 0, duration: 200, useNativeDriver: false})
+      .start(() => {
+        setIsAnimating(false)
+        props.deleteMeal(stagedDeleteMeal)
+      })
   }
 
-  // TODO: use actual (and persistent) IDs
-  const meals = props.meals.map((meal, key) => meal.addKey(`${key}`))
-  const animatedValues = meals.reduce((acc, meal) => ({...acc, [meal.key]: new Animated.Value(1)}), {})
 
   const onSwipeValueChange = ({key, value}) => {
-    if (isAnimating.current.val) return
-    // all the way open
+    if (isAnimating) return
+    // all the way open, time to show confimration dialog
     if (Math.abs(value) >= Dimensions.get('window').width) {
-      Animated
-        .timing(animatedValues[key], {toValue: 0, duration: 200, useNativeDriver: false})
-        .start(() => isAnimating.current.val = false)
-      isAnimating.current.val = true
+      const mealToDelete = props.meals.find(meal => meal.id === key) 
+      setStagedDeleteMeal(mealToDelete)
     }
   }
+
+  console.log(animatedValues)
 
   return (
     <View style={styles.fill}>
@@ -81,9 +87,10 @@ function Meals(props) {
         disableRightSwipe
         data={meals}
         contentContainerStyle={styles.fill}
+        keyExtractor={meal => meal.id}
         onSwipeValueChange={onSwipeValueChange}
         renderItem={renderItem(meal => ({
-          animatedValue: animatedValues[meal.key],
+          animatedValue: animatedValues[meal.id],
           onDelete: setStagedDeleteMeal,
           showDeleteButton: isEditMode,
           ...meal,
