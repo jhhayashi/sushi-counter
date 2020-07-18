@@ -5,7 +5,7 @@ const DEFAULT_ATTR = {
   value: 0,
 }
 
-const extractProps = pick(['value', 'name', 'date'])
+const extractProps = pick(['id', 'value', 'name', 'date'])
 
 const getBaseProps = val => {
   if (typeof val === 'string') return JSON.parse(val)
@@ -31,7 +31,7 @@ export class Meal {
     const meal = getBaseProps(val)
     Object.assign(this, extractProps(meal))
     this.date = get('date', meal) ? new Date(meal.date) : new Date()
-    this.id = createId(+this.date)
+    if (!this.id) this.id = createId(+this.date)
   }
 
   toString() {
