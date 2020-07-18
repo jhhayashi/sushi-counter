@@ -34,9 +34,9 @@ const renderItem = getPropsFromItem => ({item}) => <MealCell {...getPropsFromIte
 
 function renderHiddenItem() {
   return (
-		<View style={[styles.rowBehind, styles.fill]}>
-			<Text style={styles.deleteText}>Delete</Text>
-		</View>
+    <View style={[styles.rowBehind, styles.fill]}>
+      <Text style={styles.deleteText}>Delete</Text>
+    </View>
   )
 }
 
@@ -47,10 +47,12 @@ function Meals(props) {
   // we need to track staged delete separately from showing modal. if we use stagedDeleteMeal
   // to show/hide modal, a race condition shows a null value in the modal as it fades out
   const [showDialog, setShowDialog] = useState(false)
-  const [isAnimating, setIsAnimating]  = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
   const stagedDeleteRowRef = useRef(null)
 
-  const [animatedValues, setAnimatedValues] = useState(meals.reduce((acc, meal) => ({...acc, [meal.id]: new Animated.Value(1)}), {}))
+  const [animatedValues, setAnimatedValues] = useState(
+    meals.reduce((acc, meal) => ({...acc, [meal.id]: new Animated.Value(1)}), {})
+  )
 
   const stageDelete = useCallback(meal => {
     setStagedDeleteMeal(meal)
@@ -59,7 +61,8 @@ function Meals(props) {
 
   const cancelDelete = useCallback(() => {
     setShowDialog(false)
-    if (stagedDeleteRowRef.current && typeof stagedDeleteRowRef.current.closeRow == 'function') stagedDeleteRowRef.current.closeRow()
+    if (stagedDeleteRowRef.current && typeof stagedDeleteRowRef.current.closeRow === 'function')
+      stagedDeleteRowRef.current.closeRow()
     // ensure no flash of null content in dialog and use this values continued existence to ensure onSwipeValueChange doesnt retrigger
     setTimeout(() => setStagedDeleteMeal(null), 200)
   })
@@ -68,19 +71,21 @@ function Meals(props) {
     setIsAnimating(true)
     setShowDialog(false)
 
-    Animated
-      .timing(animatedValues[stagedDeleteMeal.id], {toValue: 0, duration: 200, useNativeDriver: false})
-      .start(() => {
-        setIsAnimating(false)
-        props.deleteMeal(stagedDeleteMeal)
-        setStagedDeleteMeal(null)
-        stagedDeleteRowRef.current = null
-      })
+    Animated.timing(animatedValues[stagedDeleteMeal.id], {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start(() => {
+      setIsAnimating(false)
+      props.deleteMeal(stagedDeleteMeal)
+      setStagedDeleteMeal(null)
+      stagedDeleteRowRef.current = null
+    })
   }
 
   const onRowDidOpen = (rowKey, rowMap) => {
     stagedDeleteRowRef.current = rowMap[rowKey]
-    const mealToDelete = props.meals.find(meal => meal.id === rowKey) 
+    const mealToDelete = props.meals.find(meal => meal.id === rowKey)
     stageDelete(mealToDelete)
   }
 

@@ -18,7 +18,9 @@ export default function HomeNavigator() {
           component={Home}
           options={({navigation}) => ({
             title: 'Sushi Counter',
-            headerLeft: () => <Button title="History" onPress={() => navigation.navigate('Meals')} />,
+            headerLeft: () => (
+              <Button title="History" onPress={() => navigation.navigate('Meals')} />
+            ),
           })}
         />
         <Stack.Screen name="Meals" component={Meals} options={{title: 'Meal History'}} />

@@ -20,9 +20,9 @@ export default class SushiAnimation extends React.Component {
 
   play = duration => {
     if (this.animation) {
-      Animated
-        .timing(this.state.progress, {toValue: 1, duration, useNativeDriver: true})
-        .start(this.reset)
+      Animated.timing(this.state.progress, {toValue: 1, duration, useNativeDriver: true}).start(
+        this.reset
+      )
     }
   }
 

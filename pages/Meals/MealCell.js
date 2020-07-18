@@ -31,7 +31,12 @@ const styles = StyleSheet.create({
   },
 })
 
-const dateFormatter = new Intl.DateTimeFormat(undefined, {weekday: "short", day: "numeric", month: "numeric", year: "2-digit"})
+const dateFormatter = new Intl.DateTimeFormat(undefined, {
+  weekday: 'short',
+  day: 'numeric',
+  month: 'numeric',
+  year: '2-digit',
+})
 
 const MealCell = props => (
   <Animated.View

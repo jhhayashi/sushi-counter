@@ -4,7 +4,14 @@ import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
 import {createMeal, incrementCount} from '../redux/actions'
-import {Ad, getMealName, HighScore, NewMealDialog, ResetMealButton, SushiAnimation} from '../components'
+import {
+  Ad,
+  getMealName,
+  HighScore,
+  NewMealDialog,
+  ResetMealButton,
+  SushiAnimation,
+} from '../components'
 import {last} from '../utils'
 
 const INC_INTERVAL = 2000
@@ -52,7 +59,7 @@ function Home(props) {
   // reset button in navbar
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Button title="Reset" onPress={showDialog} />
+      headerRight: () => <Button title="Reset" onPress={showDialog} />,
     })
   })
 
@@ -61,12 +68,14 @@ function Home(props) {
       {/* we unmount the element when shouldShowDialog is false rather than using the visible prop
           because the race condition causes the defaultMealName to update before the visibility
           prop properly hides the dialog */}
-      {shouldShowDialog && <NewMealDialog
-        defaultMealName={`New Meal ${props.mealCount + 1}`}
-        onMealNameSet={createNewMeal}
-        onCancel={() => setShouldShowDialog(false)}
-        visible={shouldShowDialog}
-      />}
+      {shouldShowDialog && (
+        <NewMealDialog
+          defaultMealName={`New Meal ${props.mealCount + 1}`}
+          onMealNameSet={createNewMeal}
+          onCancel={() => setShouldShowDialog(false)}
+          visible={shouldShowDialog}
+        />
+      )}
       <HighScore {...highScore} />
       <TouchableOpacity
         disabled={disabled}
@@ -74,7 +83,7 @@ function Home(props) {
         style={styles.button}
       >
         <SushiAnimation style={styles.sushi} ref={animation} />
-        <Text style={styles.count}>{meal ? meal.value : "--"}</Text>
+        <Text style={styles.count}>{meal ? meal.value : '--'}</Text>
       </TouchableOpacity>
     </View>
   )

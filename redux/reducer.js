@@ -13,7 +13,11 @@ export default (state = DEFAULT_STATE, action) => {
       return {...state, highScore, meals: [...withoutLast(state.meals), meal]}
     }
     case CREATE_MEAL:
-      return {...state, activeMeal: true, meals: [...state.meals, new Meal({value: 0, name: action.payload.name})]}
+      return {
+        ...state,
+        activeMeal: true,
+        meals: [...state.meals, new Meal({value: 0, name: action.payload.name})],
+      }
     case DELETE_MEAL:
       const index = state.meals.indexOf(action.payload.meal)
       const activeMeal = state.activeMeal && index != state.meals.length - 1
