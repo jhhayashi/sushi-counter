@@ -46,7 +46,6 @@ const MealCell = props => (
       </Text>
     </View>
     <Text style={styles.mealCount}>{props.value}</Text>
-    {props.showDeleteButton && <Button title="Delete" onPress={() => props.onDelete(props.meal)} />}
   </Animated.View>
 )
 
@@ -56,7 +55,6 @@ MealCell.propTypes = {
   onDelete: PropTypes.func.isRequired,
   meal: PropTypes.instanceOf(Meal),
   name: PropTypes.string.isRequired,
-  showDeleteButton: PropTypes.bool.isRequired,
   value: PropTypes.number.isRequired,
 }
 

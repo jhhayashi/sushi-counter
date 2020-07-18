@@ -42,7 +42,6 @@ function renderHiddenItem() {
 
 function Meals(props) {
   const {meals} = props
-  const [isEditMode, setEditMode] = useState(false)
   // a reference to the meal that pending the confirmation dialog before delete
   const [stagedDeleteMeal, setStagedDeleteMeal] = useState(null)
   // we need to track staged delete separately from showing modal. if we use stagedDeleteMeal
@@ -52,12 +51,6 @@ function Meals(props) {
   const stagedDeleteRowRef = useRef(null)
 
   const [animatedValues, setAnimatedValues] = useState(meals.reduce((acc, meal) => ({...acc, [meal.id]: new Animated.Value(1)}), {}))
-
-  useLayoutEffect(() => {
-    props.navigation.setOptions({
-      headerRight: () => <Button title="Edit" onPress={() => setEditMode(!isEditMode)} />
-    })
-  })
 
   const stageDelete = useCallback(meal => {
     setStagedDeleteMeal(meal)
@@ -103,13 +96,11 @@ function Meals(props) {
       <SwipeListView
         disableRightSwipe
         data={meals}
-        contentContainerStyle={styles.fill}
         keyExtractor={meal => meal.id}
         onRowDidOpen={onRowDidOpen}
         renderItem={renderItem(meal => ({
           animatedValue: animatedValues[meal.id],
           onDelete: stageDelete,
-          showDeleteButton: isEditMode,
           ...meal,
           meal,
         }))}
