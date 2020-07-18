@@ -8,7 +8,7 @@ export default function DeleteMealDialog(props) {
     <Dialog.Container visible={props.visible}>
       <Dialog.Title>{props.title || "Are you sure?"}</Dialog.Title>
       <Dialog.Description>
-        Delete {props.meal && props.meal.name}?
+        {`Delete ${props.meal && props.meal.name}?`}
       </Dialog.Description>
       <Dialog.Button label="Cancel" onPress={props.onCancel} />
       <Dialog.Button label="Confirm" onPress={props.onConfirm} />
