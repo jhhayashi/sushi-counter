@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useRef, useState} from 'react'
+import React, {useCallback, useLayoutEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Animated, Button, Dimensions, StyleSheet, Text, View} from 'react-native'
@@ -40,6 +40,9 @@ function Meals(props) {
   const [isEditMode, setEditMode] = useState(false)
   // a reference to the meal that pending the confirmation dialog before delete
   const [stagedDeleteMeal, setStagedDeleteMeal] = useState(null)
+  // we need to track staged delete separately from showing modal. if we use stagedDeleteMeal
+  // to show/hide modal, a race condition shows a null value in the modal as it fades out
+  const [showDialog, setShowDialog] = useState(false)
   const [isAnimating, setIsAnimating]  = useState(false)
 
   const [animatedValues, setAnimatedValues] = useState(meals.reduce((acc, meal) => ({...acc, [meal.id]: new Animated.Value(1)}), {}))
@@ -50,15 +53,26 @@ function Meals(props) {
     })
   })
 
-  const onConfirmDelete = () => {
+  const stageDelete = useCallback(meal => {
+    setStagedDeleteMeal(meal)
+    setShowDialog(true)
+  })
+
+  const cancelDelete = useCallback(() => {
     setStagedDeleteMeal(null)
+    setShowDialog(false)
+  })
+
+  const onConfirmDelete = () => {
     setIsAnimating(true)
+    setShowDialog(false)
 
     Animated
       .timing(animatedValues[stagedDeleteMeal.id], {toValue: 0, duration: 200, useNativeDriver: false})
       .start(() => {
         setIsAnimating(false)
         props.deleteMeal(stagedDeleteMeal)
+        setStagedDeleteMeal(null)
       })
   }
 
@@ -68,19 +82,17 @@ function Meals(props) {
     // all the way open, time to show confimration dialog
     if (Math.abs(value) >= Dimensions.get('window').width) {
       const mealToDelete = props.meals.find(meal => meal.id === key) 
-      setStagedDeleteMeal(mealToDelete)
+      stageDelete(mealToDelete)
     }
   }
-
-  console.log(animatedValues)
 
   return (
     <View style={styles.fill}>
       <DeleteMealDialog
         meal={stagedDeleteMeal}
         onConfirm={onConfirmDelete}
-        onCancel={() => setStagedDeleteMeal(null)}
-        visible={!!stagedDeleteMeal}
+        onCancel={cancelDelete}
+        visible={showDialog}
       />
       <Stats meals={meals} />
       <SwipeListView
@@ -91,7 +103,7 @@ function Meals(props) {
         onSwipeValueChange={onSwipeValueChange}
         renderItem={renderItem(meal => ({
           animatedValue: animatedValues[meal.id],
-          onDelete: setStagedDeleteMeal,
+          onDelete: stageDelete,
           showDeleteButton: isEditMode,
           ...meal,
           meal,
