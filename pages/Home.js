@@ -58,6 +58,7 @@ function Home(props) {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => <Button title="Reset" onPress={showDialog} />,
+      title: meal && meal.name ? meal.name : 'Sushi Counter',
     })
   })
 
@@ -90,6 +91,7 @@ function Home(props) {
 Home.propTypes = {
   meal: PropTypes.shape({
     value: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
   }),
   mealCount: PropTypes.number.isRequired,
   navigation: PropTypes.shape({

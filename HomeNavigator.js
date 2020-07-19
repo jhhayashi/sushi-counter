@@ -16,13 +16,16 @@ export default function HomeNavigator() {
           name="Home"
           component={Home}
           options={({navigation}) => ({
-            title: 'Sushi Counter',
             headerLeft: () => (
               <Button title="History" onPress={() => navigation.navigate('Meals')} />
             ),
           })}
         />
-        <Stack.Screen name="Meals" component={Meals} options={{title: 'Meal History'}} />
+        <Stack.Screen
+          name="Meals"
+          component={Meals}
+          options={{title: 'Meal History', headerBackTitle: 'Back'}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   )
