@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Animated, StyleSheet, Text, View} from 'react-native'
+import dateFormat from 'dateformat'
 
 import {Meal} from '../../redux/types'
 
@@ -31,12 +32,9 @@ const styles = StyleSheet.create({
   },
 })
 
-const dateFormatter = new Intl.DateTimeFormat(undefined, {
-  weekday: 'short',
-  day: 'numeric',
-  month: 'numeric',
-  year: '2-digit',
-})
+function formatDate(date) {
+  return dateFormat(date, 'ddd, m/d/yy')
+}
 
 const MealCell = props => (
   <Animated.View
@@ -47,7 +45,7 @@ const MealCell = props => (
   >
     <View style={styles.flowRight}>
       <Text>
-        <Text style={styles.bold}>{props.name}</Text> ({dateFormatter.format(props.date)})
+        <Text style={styles.bold}>{props.name}</Text> ({formatDate(props.date)})
       </Text>
     </View>
     <Text style={styles.mealCount}>{props.value}</Text>
