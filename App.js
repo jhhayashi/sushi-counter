@@ -9,8 +9,6 @@ import configureStore from './redux/store'
 
 const {store, persistor} = configureStore()
 
-// persistor.purge()
-
 // add device to receive test ads. should receive real ones once approved by fb
 // FacebookAds.AdSettings.addTestDevice(FacebookAds.AdSettings.currentDeviceHash)
 

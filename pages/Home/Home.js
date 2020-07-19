@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
-import {createMeal, incrementCount} from '../redux/actions'
+import {createMeal, incrementCount} from '../../redux/actions'
 import {
   // Ad,
   HighScore,
   NewMealDialog,
   SushiAnimation,
-} from '../components'
-import {last} from '../utils'
+} from '../../components'
+import {last} from '../../utils'
 
 const INC_INTERVAL = 2000
 
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
 })
 
 function Home(props) {
-  const {highScore, meal, navigation} = props
+  const {disableDialogs, highScore, meal, navigation} = props
   const [disabled, setDisabled] = useState(false)
-  const [shouldShowDialog, setShouldShowDialog] = useState(!meal)
+  const [shouldShowDialog, setShouldShowDialog] = useState(!meal && !disableDialogs)
   const animation = useRef(null)
 
   const incrementCount = () => {
@@ -103,6 +103,7 @@ Home.propTypes = {
     date: PropTypes.instanceOf(Date).isRequired,
   }).isRequired,
   incrementCount: PropTypes.func.isRequired,
+  disableDialogs: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => ({

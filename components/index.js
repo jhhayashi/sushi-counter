@@ -1,4 +1,5 @@
 export Ad from './Ad'
+export ChangelogDialog from './ChangelogDialog'
 export DeleteMealDialog from './DeleteMealDialog'
 export HighScore from './HighScore'
 export NewMealDialog from './NewMealDialog'

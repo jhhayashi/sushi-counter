@@ -1,9 +1,9 @@
 import {last, withoutLast} from '../utils'
 
-import {DELETE_MEAL, INCREMENT_COUNT, CREATE_MEAL, SET_ACTIVE_MEAL} from './actions'
+import {DELETE_MEAL, INCREMENT_COUNT, CREATE_MEAL, SET_ACTIVE_MEAL, SET_LAST_APP_VERSION} from './actions'
 import {Meal} from './types'
 
-const DEFAULT_STATE = {highScore: new Meal(), meals: []}
+const DEFAULT_STATE = {highScore: new Meal(), meals: [], lastAppVersion: "1.5.1"}
 
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
@@ -32,6 +32,9 @@ export default (state = DEFAULT_STATE, action) => {
     // is the active (last) one.
     case SET_ACTIVE_MEAL:
       return {...state, activeMeal: action.payload.activeMeal}
+
+    case SET_LAST_APP_VERSION:
+      return {...state, lastAppVersion: action.payload.version}
     default:
       return state
   }
