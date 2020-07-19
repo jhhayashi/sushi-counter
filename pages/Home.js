@@ -5,11 +5,9 @@ import {connect} from 'react-redux'
 
 import {createMeal, incrementCount} from '../redux/actions'
 import {
-  Ad,
-  getMealName,
+  // Ad,
   HighScore,
   NewMealDialog,
-  ResetMealButton,
   SushiAnimation,
 } from '../components'
 import {last} from '../utils'
@@ -94,6 +92,9 @@ Home.propTypes = {
     value: PropTypes.number.isRequired,
   }),
   mealCount: PropTypes.number.isRequired,
+  navigation: PropTypes.shape({
+    setOptions: PropTypes.func.isRequired,
+  }).isRequired,
   createMeal: PropTypes.func.isRequired,
   highScore: PropTypes.shape({
     value: PropTypes.number.isRequired,

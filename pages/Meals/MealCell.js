@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Animated, Button, StyleSheet, Text, View} from 'react-native'
+import {Animated, StyleSheet, Text, View} from 'react-native'
 
 import {Meal} from '../../redux/types'
 

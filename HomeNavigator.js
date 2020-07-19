@@ -5,7 +5,6 @@ import {Button} from 'react-native'
 
 import Home from './pages/Home'
 import Meals from './pages/Meals'
-import {ResetMealButton} from './components'
 
 const Stack = createStackNavigator()
 

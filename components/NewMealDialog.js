@@ -6,7 +6,7 @@ export default function NewMealDialog(props) {
   const [mealName, setMealName] = useState(undefined)
   const onSubmit = () => {
     if (mealName === '') return
-    props.onMealNameSet(mealName == undefined ? props.defaultMealName : mealName)
+    props.onMealNameSet(mealName || props.defaultMealName)
   }
   return (
     <Dialog.Container visible={props.visible}>

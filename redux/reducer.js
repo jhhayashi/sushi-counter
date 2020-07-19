@@ -18,10 +18,11 @@ export default (state = DEFAULT_STATE, action) => {
         activeMeal: true,
         meals: [...state.meals, new Meal({value: 0, name: action.payload.name})],
       }
-    case DELETE_MEAL:
+    case DELETE_MEAL: {
       const index = state.meals.indexOf(action.payload.meal)
-      const activeMeal = state.activeMeal && index != state.meals.length - 1
+      const activeMeal = state.activeMeal && index !== state.meals.length - 1
       return {...state, activeMeal, meals: state.meals.filter(meal => meal !== action.payload.meal)}
+    }
 
     // TODO: implement this correctly
     // currently, the active meal is just the last one. while this is true in most cases,

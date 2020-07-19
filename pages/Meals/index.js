@@ -1,7 +1,7 @@
-import React, {useCallback, useLayoutEffect, useRef, useState} from 'react'
+import React, {useCallback, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Animated, Button, Dimensions, StyleSheet, Text, View} from 'react-native'
+import {Animated, Dimensions, StyleSheet, Text, View} from 'react-native'
 import {SwipeListView} from 'react-native-swipe-list-view'
 
 import {DeleteMealDialog} from '../../components'
@@ -47,10 +47,9 @@ function Meals(props) {
   // we need to track staged delete separately from showing modal. if we use stagedDeleteMeal
   // to show/hide modal, a race condition shows a null value in the modal as it fades out
   const [showDialog, setShowDialog] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
   const stagedDeleteRowRef = useRef(null)
 
-  const [animatedValues, setAnimatedValues] = useState(
+  const [animatedValues] = useState(
     meals.reduce((acc, meal) => ({...acc, [meal.id]: new Animated.Value(1)}), {})
   )
 
@@ -68,7 +67,6 @@ function Meals(props) {
   })
 
   const onConfirmDelete = () => {
-    setIsAnimating(true)
     setShowDialog(false)
 
     Animated.timing(animatedValues[stagedDeleteMeal.id], {
@@ -76,7 +74,6 @@ function Meals(props) {
       duration: 200,
       useNativeDriver: false,
     }).start(() => {
-      setIsAnimating(false)
       props.deleteMeal(stagedDeleteMeal)
       setStagedDeleteMeal(null)
       stagedDeleteRowRef.current = null
