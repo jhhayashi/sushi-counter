@@ -1,6 +1,6 @@
 import React, {useCallback, useLayoutEffect, useRef, useState} from 'react'
 import PropTypes from 'prop-types'
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {Button, Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {connect} from 'react-redux'
 
 import {createMeal, incrementCount} from '../../redux/actions'
@@ -10,6 +10,7 @@ import {
   NewMealDialog,
   SushiAnimation,
 } from '../../components'
+import {HeaderRight} from '../../components/Header'
 import {last} from '../../utils'
 
 const INC_INTERVAL = 2000
@@ -57,7 +58,7 @@ function Home(props) {
   // reset button in navbar
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight: () => <Button title="Reset" onPress={showDialog} />,
+      headerRight: () => <HeaderRight onReset={showDialog} navigation={navigation} />,
       title: meal && meal.name ? meal.name : 'Sushi Counter',
     })
   })

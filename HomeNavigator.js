@@ -1,8 +1,9 @@
 import * as React from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import {createStackNavigator} from '@react-navigation/stack'
-import {Button} from 'react-native'
+import {Button, Platform} from 'react-native'
 
+import {HeaderLeft} from './components/Header'
 import Home from './pages/Home'
 import Meals from './pages/Meals'
 
@@ -16,9 +17,7 @@ export default function HomeNavigator() {
           name="Home"
           component={Home}
           options={({navigation}) => ({
-            headerLeft: () => (
-              <Button title="History" onPress={() => navigation.navigate('Meals')} />
-            ),
+            ...(HeaderLeft ? {headerLeft: () => <HeaderLeft navigation={navigation} />} : {}),
           })}
         />
         <Stack.Screen
