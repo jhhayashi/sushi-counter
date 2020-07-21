@@ -25,6 +25,9 @@
       "bundleIdentifier": "com.jordanhayashi.sushicounter"
     },
     "facebookAppId": "2048557798713174",
-    "facebookDisplayName": "jhhayashi"
+    "facebookDisplayName": "jhhayashi",
+    "android": {
+      "package": "com.jordanhayashi.sushicounter"
+    }
   }
 }
